@@ -6,9 +6,13 @@ const connectDB = require('./config/dbConn');
 
 connectDB();
 
+app.use(express.json());
+
 app.get('/', (req, res) => {
     res.send('Hello World');
 })
+
+app.use('/api', require('./routes/UserRoutes'))
 
 app.listen(port, () => {
     console.log('App listening on port', port)
