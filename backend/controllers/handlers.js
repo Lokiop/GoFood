@@ -14,21 +14,40 @@ const fetchData = async () => {
 //Create User
 const createUser = async (req, res) => {
     try {
-        const { name, email, password, location, date } = req.body;
+        const { userName, email, password, location } = req.body;
         const user = await User.create({
-            name,
+            userName,
             email,
             password,
-            location,
-            date
+            location
         })
 
-        user.success = 'true';
-        res.status(200).json(user);
+        console.log("User Created :", userName);
+        res.status(200).json({ ...user, success: true });
     } catch (err) {
         console.log(err);
-        res.json({ success: "false" });
+        res.status(404).json({ success: false });
     }
 }
 
-module.exports = { fetchData, createUser };
+//Validate User
+const validateUser = async (req, res) => {
+    try {
+        let email = req.body.email;
+        let response = await User.findOne({ email });
+        if (!response) {
+            return res.status(400).json({ msg: "Email not Registered" });
+        }
+
+        if (req.body.password !== response.password) {
+            return res.status(400).json({ msg: "incorrect Password" });
+        }
+
+        return res.status(200).json({ success: true });
+
+    } catch (err) {
+
+    }
+}
+
+module.exports = { fetchData, createUser, validateUser };
