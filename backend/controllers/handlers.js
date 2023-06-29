@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
-const User = require('../models/UserModel')
+const User = require('../models/UserModel');
+
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const fetchData = async () => {
     try {
@@ -15,15 +18,23 @@ const fetchData = async () => {
 const createUser = async (req, res) => {
     try {
         const { userName, email, password, location } = req.body;
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
         const user = await User.create({
             userName,
             email,
-            password,
+            password: hashedPassword,
             location
         })
 
+        const response = {
+            user,
+            success: true,
+        }
+
         console.log("User Created :", userName);
-        res.status(200).json({ ...user, success: true });
+        res.status(200).json(response);
     } catch (err) {
         console.log(err);
         res.status(404).json({ success: false });
@@ -39,14 +50,24 @@ const validateUser = async (req, res) => {
             return res.status(400).json({ msg: "Email not Registered" });
         }
 
-        if (req.body.password !== response.password) {
+        const isPasswordCorrect = await bcrypt.compare(req.body.password, response.password)
+        if (!isPasswordCorrect) {
             return res.status(400).json({ msg: "incorrect Password" });
         }
 
-        return res.status(200).json({ success: true });
+        const data = {
+            user: {
+                id: response.id
+            }
+        }
+
+        const authToken = jwt.sign(data, process.env.JWTSecret)
+
+        return res.status(200).json({ success: true, authToken: authToken });
 
     } catch (err) {
-
+        console.log(err);
+        return;
     }
 }
 

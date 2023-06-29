@@ -29,6 +29,7 @@ export default function Login() {
       return;
     }
 
+    localStorage.setItem("authToken", data.authToken);
     navigate("/");
   };
 
