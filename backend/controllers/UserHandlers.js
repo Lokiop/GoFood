@@ -1,18 +1,7 @@
-const mongoose = require('mongoose');
 const User = require('../models/UserModel');
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
-const fetchData = async () => {
-    try {
-        const collection = mongoose.connection.db.collection('food_items');
-        const data = await collection.find().toArray();
-        console.log(data)
-    } catch (err) {
-        console.log(err);
-    }
-};
 
 //Create User
 const createUser = async (req, res) => {
@@ -71,4 +60,4 @@ const validateUser = async (req, res) => {
     }
 }
 
-module.exports = { fetchData, createUser, validateUser };
+module.exports = { createUser, validateUser };
