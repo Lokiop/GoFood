@@ -1,7 +1,7 @@
-<h1>Go Food</h1>
+<h1>QuickBite</h1>
 
 <p>
-    Go Food is a web App where you can Order Food Online.
+    QuickBite is a web App where you can Order Food Online.
     Used:
     <ul>
         <li>HTML</li>
