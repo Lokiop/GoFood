@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Badge from "react-bootstrap/Badge";
+import Modal from "../modal";
+import Cart from "../screens/Cart";
+import { useCart } from "./ContextReducer";
 
 export default function Navbar() {
+  const [cartView, setCartView] = useState(false);
+  let data = useCart();
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("authToken");
@@ -13,7 +19,7 @@ export default function Navbar() {
       <nav className="navbar navbar-expand-lg navbar-dark bg-success">
         <div className="container-fluid">
           <Link className="navbar-brand fs-1 fst-italic" to="/">
-            GoFood
+            QuickBite
           </Link>
           <button
             className="navbar-toggler"
@@ -53,7 +59,26 @@ export default function Navbar() {
             </ul>
             {localStorage.getItem("authToken") ? (
               <div className="d-flex">
-                <div className="btn bg-white text-success mx-2">My Cart</div>
+                <div
+                  className="btn bg-white text-success mx-2"
+                  onClick={() => {
+                    setCartView(true);
+                  }}
+                >
+                  My Cart
+                  <Badge pill bg="danger" style={{ marginLeft: "6px" }}>
+                    {data.length ? data.length : ""}
+                  </Badge>
+                </div>
+                {cartView ? (
+                  <Modal
+                    onClose={() => {
+                      setCartView(false);
+                    }}
+                  >
+                    <Cart />
+                  </Modal>
+                ) : null}
                 <div
                   className="btn bg-white text-danger mx-2"
                   onClick={handleLogout}
