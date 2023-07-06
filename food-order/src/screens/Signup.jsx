@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -44,10 +45,23 @@ export default function Signup() {
   };
 
   return (
-    <>
+    <div
+      style={{
+        backgroundImage:
+          'url("https://images.pexels.com/photos/1565982/pexels-photo-1565982.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1")',
+        backgroundSize: "cover",
+        height: "100vh",
+      }}
+    >
+      <div>
+        <Navbar />
+      </div>
       <div className="container">
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3 mt-3">
+        <form
+          onSubmit={handleSubmit}
+          className="w-50 m-auto mt-5 border bg-dark border-success rounded"
+        >
+          <div className="m-3">
             <label htmlFor="userName" className="form-label">
               UserName
             </label>
@@ -60,7 +74,7 @@ export default function Signup() {
               onChange={onChange}
             />
           </div>
-          <div className="mb-3">
+          <div className="m-3">
             <label htmlFor="exampleInputEmail1" className="form-label">
               Email address
             </label>
@@ -77,7 +91,7 @@ export default function Signup() {
               We'll never share your email with anyone else.
             </div>
           </div>
-          <div className="mb-3">
+          <div className="m-3">
             <label htmlFor="exampleInputPassword1" className="form-label">
               Password
             </label>
@@ -90,7 +104,7 @@ export default function Signup() {
               onChange={onChange}
             />
           </div>
-          <div className="mb-3">
+          <div className="m-3">
             <label htmlFor="geolocation" className="form-label">
               Location
             </label>
@@ -104,14 +118,14 @@ export default function Signup() {
             />
           </div>
 
-          <button type="submit" className="btn btn-success">
+          <button type="submit" className="m-3 btn btn-success">
             Submit
           </button>
-          <Link to="/login" className="ms-3 btn btn-primary">
+          <Link to="/login" className="m-3 btn btn-primary">
             Already a User
           </Link>
         </form>
       </div>
-    </>
+    </div>
   );
 }

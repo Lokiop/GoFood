@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -42,10 +43,23 @@ export default function Login() {
   };
 
   return (
-    <>
+    <div
+      style={{
+        backgroundImage:
+          'url("https://images.pexels.com/photos/326278/pexels-photo-326278.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1")',
+        height: "100vh",
+        backgroundSize: "cover",
+      }}
+    >
+      <div>
+        <Navbar />
+      </div>
       <div className="container">
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3 mt-3">
+        <form
+          className="w-50 m-auto mt-5 border bg-dark border-success rounded"
+          onSubmit={handleSubmit}
+        >
+          <div className="m-3">
             <label htmlFor="exampleInputEmail1" className="form-label">
               Email address
             </label>
@@ -59,7 +73,7 @@ export default function Login() {
               onChange={onChange}
             />
           </div>
-          <div className="mb-3">
+          <div className="m-3">
             <label htmlFor="exampleInputPassword1" className="form-label">
               Password
             </label>
@@ -73,14 +87,14 @@ export default function Login() {
             />
           </div>
 
-          <button type="submit" className="btn btn-success">
+          <button type="submit" className="m-3 btn btn-success">
             Submit
           </button>
-          <Link to="/signup" className="ms-3 btn btn-primary">
+          <Link to="/signup" className="m-3 btn btn-primary">
             Not Registered
           </Link>
         </form>
       </div>
-    </>
+    </div>
   );
 }
