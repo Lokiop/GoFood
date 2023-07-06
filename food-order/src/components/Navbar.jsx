@@ -7,10 +7,13 @@ import { useCart } from "./ContextReducer";
 
 export default function Navbar() {
   const [cartView, setCartView] = useState(false);
-  let data = useCart();
+  let data = useCart().filter(
+    (food) => food.user === localStorage.getItem("email")
+  );
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("authToken");
+    localStorage.removeItem("email");
     navigate("/");
   };
 

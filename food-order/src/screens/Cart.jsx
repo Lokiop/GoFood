@@ -3,8 +3,10 @@ import Delete from "@material-ui/icons/Delete";
 import { useCart, useDispatchCart } from "../components/ContextReducer";
 
 export default function Cart() {
-  let data = useCart();
-  console.log(data);
+  // console.log(useCart);
+  let data = useCart().filter(
+    (item) => item.user === localStorage.getItem("email")
+  );
   let dispatch = useDispatchCart();
   if (data.length === 0) {
     return (
@@ -13,6 +15,25 @@ export default function Cart() {
       </div>
     );
   }
+
+  const handleOrder = async () => {
+    let email = localStorage.getItem("email");
+    let response = await fetch("http://localhost:5000/api/order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        order_data: data,
+        email: email,
+        order_date: new Date().toDateString(),
+      }),
+    });
+
+    if (response.status === 203) {
+      dispatch({ type: "Drop" });
+    }
+  };
 
   let totalPrice = data.reduce((total, food) => total + food.price, 0);
   return (
@@ -48,7 +69,11 @@ export default function Cart() {
                     type="button"
                     className="btn p-0"
                     onClick={() => {
-                      dispatch({ type: "Remove", index: index });
+                      dispatch({
+                        type: "Remove",
+                        id: food.id,
+                        user: localStorage.getItem("email"),
+                      });
                     }}
                   >
                     <Delete />
@@ -62,7 +87,9 @@ export default function Cart() {
           <h1 className="fs-2 mt-4">Total Price: {totalPrice}/-</h1>
         </div>
         <div>
-          <button className="btn bg-success mt-5">Check Out</button>
+          <button className="btn bg-success mt-5" onClick={handleOrder}>
+            Order
+          </button>
         </div>
       </div>
     </div>

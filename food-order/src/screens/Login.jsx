@@ -30,6 +30,7 @@ export default function Login() {
     }
 
     localStorage.setItem("authToken", data.authToken);
+    localStorage.setItem("email", credentials.email);
     navigate("/");
   };
 

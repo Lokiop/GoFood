@@ -13,25 +13,29 @@ export default function Card(props) {
   const cartData = useCart();
 
   const handleAddToCart = async () => {
-    let food = [];
+    let isInCart = false;
     for (const item of cartData) {
-      if (item.id === foodItem._id) {
-        food = item;
+      if (
+        item.id === foodItem._id &&
+        item.size === size &&
+        item.user === localStorage.getItem("email")
+      ) {
+        isInCart = true;
         break;
       }
     }
 
-    if (food.length !== 0) {
-      if (food.size === size) {
-        await dispatch({
-          type: "Update",
-          id: foodItem._id,
-          price: finalPrice,
-          qty: qty,
-        });
-        return;
-      }
+    if (isInCart) {
+      await dispatch({
+        type: "Update",
+        id: foodItem._id,
+        price: finalPrice,
+        qty: qty,
+        size: size,
+      });
+      return;
     }
+
     await dispatch({
       type: "Add",
       id: foodItem._id,
@@ -43,7 +47,7 @@ export default function Card(props) {
     });
   };
 
-  const finalPrice = qty * parseInt(options[size]);
+  const finalPrice = parseInt(qty) * parseInt(options[size]);
 
   useEffect(() => {
     setSize(priceRef.current.value);
